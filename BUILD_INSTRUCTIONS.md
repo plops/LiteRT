@@ -65,8 +65,8 @@ cd LiteRT
 ./configure
 
 # Build
-bazel build //litert/cc:litert_api
-bazel build //litert/tools:all
+bazel build //litert/cc:litert_api_with_dynamic_runtime --repo_env=USE_HERMETIC_CC_TOOLCHAIN=0
+bazel build //litert/tools:all --repo_env=USE_HERMETIC_CC_TOOLCHAIN=0
 ```
 
 ### Step 3: Verify Installation
