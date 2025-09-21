@@ -264,3 +264,18 @@ openvino_configure(
     name = "intel_openvino",
     build_file = "//third_party/intel_openvino:openvino.bazel",
 )
+
+# Define a local repository to make the system's X11 headers available
+# to Bazel targets in a hermetic way.
+new_local_repository(
+    name = "x11",
+    build_file_content = """
+package(default_visibility = ["//visibility:public"])
+cc_library(
+    name = "headers",
+    hdrs = glob(["**/*.h"]),
+    includes = ["."],
+)
+""",
+    path = "/usr/include",
+)

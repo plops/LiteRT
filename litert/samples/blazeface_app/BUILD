@@ -5,9 +5,15 @@ package(default_visibility = ["//visibility:public"])
 cc_binary(
     name = "blazeface_app",
     srcs = ["main.cc"],
+    # Linker options are still required for the final linking stage.
+    linkopts = [
+        "-lX11",
+        "-lXext",
+        "-lXfixes",
+    ],
     deps = [
         "//litert/cc:litert_api_with_dynamic_runtime",
-        # You will need to add a dependency for an image loading library.
-        # For example, if you use OpenCV, you would add its Bazel target here.
+        # Add a dependency on the X11 headers target we defined in WORKSPACE.
+        "@x11//:headers",
     ],
 )
