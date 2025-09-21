@@ -73,9 +73,53 @@ bazel build //litert/tools:all --repo_env=USE_HERMETIC_CC_TOOLCHAIN=0
 
 ```bash
 # Test the benchmark tool
+wget https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite
 ./bazel-bin/litert/tools/benchmark_model \
-    --model=path/to/model.tflite \
+    --graph=blaze_face_short_range.tflite \
     --num_threads=4
+```
+
+Example output:
+
+```
+INFO: STARTING!
+INFO: Log parameter values verbosely: [0]
+INFO: Num threads: [4]
+INFO: [litert/tools/benchmark_litert_model.cc:137] Loading model from: blaze_face_short_range.tflite
+INFO: [litert/core/environment.cc:29] Creating LiteRT environment with options
+WARNING: [litert/runtime/accelerators/auto_registration.cc:46] NPU accelerator could not be loaded and registered: kLiteRtStatusErrorInvalidArgument.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1758455104.504065   62590 accelerator_registry.cc:51] RegisterAccelerator: ptr=0x559f093a7dd0, name=CpuAccelerator
+INFO: [litert/runtime/accelerators/auto_registration.cc:109] CPU accelerator registered.
+INFO: [litert/runtime/compiled_model.cc:229] Applying compiler plugins...
+INFO: [litert/runtime/compiled_model.cc:258] Flatbuffer model initialized directly from incoming litert model.
+INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+INFO: The input model file size (MB): 0.229746
+INFO: Initialized session in 5.757ms.
+INFO: Running benchmark for at least 1 iterations and at least 0.5 seconds but terminate if exceeding 150 seconds.
+INFO: count=526 first=2125 curr=969 min=910 max=2125 avg=949.861 std=68 p5=915 median=939 p95=990
+
+INFO: Running benchmark for at least 50 iterations and at least 1 seconds but terminate if exceeding 150 seconds.
+INFO: count=1054 first=1015 curr=942 min=910 max=1102 avg=947.132 std=23 p5=915 median=942 p95=991
+
+INFO: [./litert/tools/benchmark_litert_model.h:72] 
+========== BENCHMARK RESULTS ==========
+INFO: [./litert/tools/benchmark_litert_model.h:73] Model initialization: 5.76 ms
+INFO: [./litert/tools/benchmark_litert_model.h:75] Warmup (first):       2.12 ms
+INFO: [./litert/tools/benchmark_litert_model.h:77] Warmup (avg):         0.95 ms (526 runs)
+INFO: [./litert/tools/benchmark_litert_model.h:79] Inference (avg):      0.95 ms (1054 runs)
+INFO: [./litert/tools/benchmark_litert_model.h:83] Inference (min):      0.91 ms
+INFO: [./litert/tools/benchmark_litert_model.h:85] Inference (max):      1.10 ms
+INFO: [./litert/tools/benchmark_litert_model.h:87] Inference (std):      0.02
+INFO: [./litert/tools/benchmark_litert_model.h:94] Throughput:           197.97 MB/s
+INFO: [./litert/tools/benchmark_litert_model.h:103] 
+Memory Usage:
+INFO: [./litert/tools/benchmark_litert_model.h:105] Init footprint:       4.06 MB
+INFO: [./litert/tools/benchmark_litert_model.h:107] Overall footprint:    7.07 MB
+INFO: [./litert/tools/benchmark_litert_model.h:114] Peak memory usage not available. (peak_mem_mb <= 0)
+INFO: [./litert/tools/benchmark_litert_model.h:117] ======================================
+
+I0000 00:00:1758455106.022223   62590 accelerator_registry.cc:40] DestroyAccelerator: ptr=0x559f093a7dd0, name=CpuAccelerator
 ```
 
 ## macOS Build Instructions
