@@ -277,5 +277,5 @@ cc_library(
     includes = ["."],
 )
 """,
-    path = "/usr/include",
+    path = "/usr/include/X11",
 )
